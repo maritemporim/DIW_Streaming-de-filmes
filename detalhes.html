@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>StreamAmly</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="assets/js/app.js" defer></script>
+</head>
+
+<body class="bg-light">
+    <main class="container py-2 py-md-4">
+        <article>
+            <header class="py-2 py-md-3 mb-3 mb-md-4 text-center text-md-start">
+                <img src="assets/img/logo.png" alt="Logo StreamAmly" class="logo-img">
+            </header>
+
+            <div class="row mb-4 mb-md-5 px-2 px-md-0">
+                <div class="col-12 col-md-4 mb-3 mb-md-0">
+                    <img id="imagem" src="" alt="Poster do Filme" class="img-fluid rounded shadow-lg w-100">
+                </div>
+                <div class="col-12 col-md-8 ps-md-4">
+                    <h1 id="titulo" class="text-purple-dark mb-2 mb-md-3 h3 h1-md"></h1>
+                    <div class="d-flex flex-wrap gap-2 gap-md-3 mb-3 mb-md-4">
+                        <span class="badge bg-purple text-purple-dark p-1 p-md-2">Drama</span>
+                        <span class="badge bg-purple text-purple-dark p-1 p-md-2">Romance</span>
+                    </div>
+                    <p id="descricao" class="mb-3 mb-md-4"></p>
+                    
+                    <div class="d-flex flex-wrap gap-2 gap-md-3 mb-3 mb-md-4">
+                        <button class="btn btn-purple-dark text-white px-3 px-md-4 py-1 py-md-2">
+                            <i class="fas fa-play me-1 me-md-2"></i> Assistir
+                        </button>
+                        <button id="btnFavorito" class="btn btn-outline-purple-dark px-3 px-md-4 py-1 py-md-2">
+    <i class="fas fa-heart me-1 me-md-2"></i> 
+    <span id="textoFavorito">Favorito</span>
+</button>
+                    </div>
+                    
+                    <div class="row g-2 g-md-3">
+                        <div class="col-6 col-sm-6">
+                            <h5 class="text-purple-dark h6 h5-md"><i class="fas fa-star me-1 me-md-2 text-warning"></i> Avaliação</h5>
+                            <p class="small">4.8/5 (1.2M avaliações)</p>
+                        </div>
+                        <div class="col-6 col-sm-6">
+                            <h5 class="text-purple-dark h6 h5-md"><i class="fas fa-clock me-1 me-md-2"></i> Duração</h5>
+                            <p class="small">1h 45min</p>
+                        </div>
+                        <div class="col-6 col-sm-6">
+                            <h5 class="text-purple-dark h6 h5-md"><i class="fas fa-calendar-alt me-1 me-md-2"></i> Lançamento</h5>
+                            <p class="small">2023</p>
+                        </div>
+                        <div class="col-6 col-sm-6">
+                            <h5 class="text-purple-dark h6 h5-md"><i class="fas fa-globe me-1 me-md-2"></i> Idioma</h5>
+                            <p class="small">Português, Inglês</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4 px-2 px-md-0">
+                <h2 class="text-purple-dark mb-2 mb-md-3 h4 h2-md">Você também pode gostar</h2>
+                <div class="row g-2 g-md-3" id="recomendados"></div>
+            </div>
+        </article>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    const filmeId = parseInt(params.get("id"));
+    const btnFavorito = document.getElementById('btnFavorito');
+    const textoFavorito = document.getElementById('textoFavorito');
+
+    // Verifica se o filme já é favorito
+    function atualizarEstadoFavorito() {
+        const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+        const isFavorito = favoritos.includes(filmeId);
+        
+        if (isFavorito) {
+            btnFavorito.classList.remove('btn-outline-purple-dark');
+            btnFavorito.classList.add('btn-purple-dark', 'text-white');
+            textoFavorito.textContent = 'Remover';
+        } else {
+            btnFavorito.classList.remove('btn-purple-dark', 'text-white');
+            btnFavorito.classList.add('btn-outline-purple-dark');
+            textoFavorito.textContent = 'Favorito';
+        }
+    }
+
+    btnFavorito.addEventListener('click', function() {
+    this.classList.add('btn-loading');
+    this.disabled = true;
+    
+    setTimeout(() => {
+        let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+        const index = favoritos.indexOf(filmeId);
+        
+        if (index === -1) {
+            favoritos.push(filmeId);
+            btnFavorito.innerHTML = '<i class="fas fa-check me-2"></i> Adicionado!';
+        } else {
+            favoritos.splice(index, 1);
+            btnFavorito.innerHTML = '<i class="fas fa-times me-2"></i> Removido!';
+        }
+        
+        localStorage.setItem('favoritos', JSON.stringify(favoritos));
+        
+        setTimeout(() => {
+            this.classList.remove('btn-loading');
+            this.disabled = false;
+            atualizarEstadoFavorito();
+        }, 1000);
+
+        window.dispatchEvent(new Event('favoritosUpdated'));
+    }, 300);
+});
+
+window.addEventListener('favoritosUpdated', atualizarEstadoFavorito);
+
+    atualizarEstadoFavorito();
+});
+</script>
+</body>
+</html>

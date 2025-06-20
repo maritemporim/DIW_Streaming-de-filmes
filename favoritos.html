@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Favoritos - StreamAmly</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        .empty-favorites {
+            text-align: center;
+            padding: 50px 0;
+        }
+        .empty-favorites i {
+            font-size: 3rem;
+            color: #6f42c1;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <main class="container py-2 py-md-4">
+        <article>
+            <header class="py-2 py-md-3 mb-3 mb-md-4">
+                <div class="header-content">
+                    <img src="assets/img/logo.png" alt="Logo StreamAmly" class="logo-img">
+                    <div class="header-buttons">
+                        <a href="login.html" class="btn btn-purple-dark rounded-pill px-3 py-2 d-flex align-items-center">
+                            <i class="fas fa-user-circle me-2"></i> Login / Registro
+                        </a>
+                        <a href="favoritos.html" class="btn btn-purple-dark rounded-pill px-3 py-2 d-flex align-items-center">
+                            <i class="fas fa-heart me-2"></i> Favoritos
+                        </a>
+                        <button id="searchButton" class="btn btn-outline-purple-dark rounded-pill px-3 py-2 d-flex align-items-center">
+                            <i class="fas fa-search me-2"></i> Pesquisar
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="mb-4">
+                <h1 class="text-purple-dark mb-3">Meus Favoritos</h1>
+                <div id="favoritos-container" class="row g-2 g-md-4"></div>
+                
+                <div id="empty-favorites" class="empty-favorites" style="display: none;">
+                    <i class="fas fa-heart-broken"></i>
+                    <h3>Nenhum filme favoritado ainda</h3>
+                    <p>Volte à página inicial e adicione seus filmes favoritos</p>
+                    <a href="index.html" class="btn btn-purple-dark mt-3">Explorar filmes</a>
+                </div>
+            </div>
+
+            <footer class="footer-info mx-2 mx-md-0">
+            </footer>
+        </article>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/favoritos.js"></script>
+</body>
+</html>
